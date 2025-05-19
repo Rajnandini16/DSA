@@ -2,58 +2,73 @@
 using namespace std;
 
 int main() {
-    int n1, n2;
-    cout << "Enter size of first sorted array: ";
-    cin >> n1;
-    int* arr1 = new int[n1];
-    cout << "Enter elements of first sorted array:\n";
-    for (int i = 0; i < n1; i++) cin >> arr1[i];
+    int R, S;
+    cout << "Enter number of elements in array A: ";
+    cin >> R;
+    int A[R];
+    cout << "Enter elements of sorted array A: ";
+    for (int i = 0; i < R; i++) cin >> A[i];
 
-    cout << "Enter size of second sorted array: ";
-    cin >> n2;
-    int* arr2 = new int[n2];
-    cout << "Enter elements of second sorted array:\n";
-    for (int i = 0; i < n2; i++) cin >> arr2[i];
+    cout << "Enter number of elements in array B: ";
+    cin >> S;
+    int B[S];
+    cout << "Enter elements of sorted array B: ";
+    for (int i = 0; i < S; i++) cin >> B[i];
 
-    int* merged = new int[n1 + n2];
-    int i = 0, j = 0, k = 0;
+    int C[R + S];
+    int NA = 0, NB = 0, PTR = 0;
 
-    while (i < n1 && j < n2) {
-        if (arr1[i] < arr2[j])
-            merged[k++] = arr1[i++];
+    // Merge arrays
+    while (NA < R && NB < S) {
+        if (A[NA] < B[NB])
+            C[PTR++] = A[NA++];
         else
-            merged[k++] = arr2[j++];
+            C[PTR++] = B[NB++];
     }
-    while (i < n1) merged[k++] = arr1[i++];
-    while (j < n2) merged[k++] = arr2[j++];
 
-    cout << "Merged sorted array: ";
-    for (int x = 0; x < n1 + n2; x++) cout << merged[x] << " ";
-    cout << "\n";
+    while (NA < R) C[PTR++] = A[NA++];
+    while (NB < S) C[PTR++] = B[NB++];
 
-    int key;
-    cout << "Enter value to search: ";
-    cin >> key;
+    int choice;
+    cout << "\nMenu:\n1. Display Merged Array\n2. Search an Element\nEnter your choice: ";
+    cin >> choice;
 
-    int low = 0, high = n1 + n2 - 1;
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        if (merged[mid] == key) {
-            cout << "Element found at index " << mid << endl;
-            delete[] arr1;
-            delete[] arr2;
-            delete[] merged;
-            return 0;  // exit early on found
+    switch (choice) {
+        case 1:
+            cout << "Merged Array: ";
+            for (int i = 0; i < R + S; i++)
+                cout << C[i] << " ";
+            cout << endl;
+            break;
+
+        case 2: {
+            int key, index = -1;
+            cout << "Enter element to search: ";
+            cin >> key;
+
+            int low = 0, high = R + S - 1;
+            while (low <= high) {
+                int mid = (low + high) / 2;
+                if (C[mid] == key) {
+                    index = mid;
+                    break;
+                } else if (C[mid] < key) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+
+            if (index != -1)
+                cout << "Element found at position: " << index + 1 << endl;
+            else
+                cout << "Element not found." << endl;
+            break;
         }
-        else if (merged[mid] < key) low = mid + 1;
-        else high = mid - 1;
+
+        default:
+            cout << "Invalid choice." << endl;
     }
-
-    cout << "Element not found\n";
-
-    delete[] arr1;
-    delete[] arr2;
-    delete[] merged;
 
     return 0;
 }
