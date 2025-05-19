@@ -34,18 +34,17 @@ int main() {
             cout << "Array sorted using Insertion Sort.\n";
 
         } else if (choice == 3) {
-            cout << "Enter element to search: ";
-            cin >> key;
-            bool found = false;
-            for (i = 0; i < n; i++) {
-                if (arr[i] == key) {
-                    cout << "Element found at index " << i << endl;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-                cout << "Element not found.\n";
+    cout << "Enter element to search: ";
+    cin >> key;
+    for (i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            cout << "Element found at index " << i << endl;
+            break;
+        }
+    }
+    if (i == n)
+        cout << "Element not found.\n";
+    break;
 
         } else if (choice == 4) {
             cout << "Exiting...\n";
