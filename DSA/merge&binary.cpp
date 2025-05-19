@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n1, n2;
+    cout << "Enter size of first sorted array: ";
+    cin >> n1;
+    int* arr1 = new int[n1];
+    cout << "Enter elements of first sorted array:\n";
+    for (int i = 0; i < n1; i++) cin >> arr1[i];
+
+    cout << "Enter size of second sorted array: ";
+    cin >> n2;
+    int* arr2 = new int[n2];
+    cout << "Enter elements of second sorted array:\n";
+    for (int i = 0; i < n2; i++) cin >> arr2[i];
+
+    int* merged = new int[n1 + n2];
+    int i = 0, j = 0, k = 0;
+
+    while (i < n1 && j < n2) {
+        if (arr1[i] < arr2[j])
+            merged[k++] = arr1[i++];
+        else
+            merged[k++] = arr2[j++];
+    }
+    while (i < n1) merged[k++] = arr1[i++];
+    while (j < n2) merged[k++] = arr2[j++];
+
+    cout << "Merged sorted array: ";
+    for (int x = 0; x < n1 + n2; x++) cout << merged[x] << " ";
+    cout << "\n";
+
+    int key;
+    cout << "Enter value to search: ";
+    cin >> key;
+
+    int low = 0, high = n1 + n2 - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (merged[mid] == key) {
+            cout << "Element found at index " << mid << endl;
+            delete[] arr1;
+            delete[] arr2;
+            delete[] merged;
+            return 0;  // exit early on found
+        }
+        else if (merged[mid] < key) low = mid + 1;
+        else high = mid - 1;
+    }
+
+    cout << "Element not found\n";
+
+    delete[] arr1;
+    delete[] arr2;
+    delete[] merged;
+
+    return 0;
+}
